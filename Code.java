@@ -2,19 +2,19 @@ import java.util.Random;
 import java.util.HashMap;
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 import java.lang.Math;
 import java.lang.StringBuilder;
 
 class Code {
-  private static HashMap<String,String> PEGS;
-  private static ArrayList<String> pegStrings;
+  private static String[] PEGS;
   protected String secretCodeString;
 
 
   public static void main(String[] args) {
-
+     // setPegs();
   }
 
   public Code(String input){
@@ -25,45 +25,20 @@ class Code {
     randomize();
   }
 
-
-  //literally just creates the peghash
   public static void setPegs(){
-    PEGS = new HashMap<String,String>();
+    PEGS = new String[]{"c","r","p","o","g"};
+}
 
-    PEGS.put("C","c");
-    PEGS.put("Y","y");
-    PEGS.put("R","r");
-    PEGS.put("P","p");
-    PEGS.put("O","o");
-    PEGS.put("G","g");
-  }
-
-  //turns the pegs ito something randomize can use
- public static ArrayList<String> makePegArray(){
+  public Code randomize(){
     setPegs();
 
-    pegStrings = new ArrayList<String>();
-
-    Collection<String> pegValues = PEGS.values();
-    Object[] pegObjects = pegValues.toArray();
-
-      for (int i = 0; i < pegObjects.length; i++){
-        pegStrings.add(pegObjects[i].toString());
-      }
-
-    return pegStrings;
-  }
-
-  // sets Class Variable secretCode to a four letter combination
-  public Code randomize(){
     secretCodeString = new String();
 
     Random rand = new Random();
-    int randIndex = rand.nextInt(makePegArray().size());
 
     for (int i = 0; i < 4; i++){
-      randIndex = rand.nextInt(makePegArray().size());
-      secretCodeString = secretCodeString.concat(makePegArray().get(randIndex));
+      int randIndex = rand.nextInt(6);
+      secretCodeString = secretCodeString.concat(PEGS[randIndex]);
     }
 
       Code secretCode = parse(secretCodeString);
@@ -71,14 +46,13 @@ class Code {
   }
 
   public static Code parse(String input) {
-    setPegs();
-    makePegArray();
+    //setPegs();
 
     String[] letters = input.split("");
     StringBuilder sb = new StringBuilder();
 
     for (String letter : letters) {
-      if (pegStrings.contains(letter)) {
+      if (Arrays.asList(PEGS).contains(letter)) {
         sb.append(letter);
       } else {
         System.out.println(letter);
@@ -87,8 +61,8 @@ class Code {
       }
     }
 
-    String pegListString = sb.toString();
-    Code parsedCode = new Code(pegListString);
+    String stringToParse = sb.toString();
+    Code parsedCode = new Code(stringToParse);
     //System.out.println(parsedCode);
     return parsedCode;
 
