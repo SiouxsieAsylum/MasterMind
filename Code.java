@@ -13,9 +13,7 @@ class Code {
   protected String secretCodeString;
 
 
-  public static void main(String[] args) {
-     // setPegs();
-  }
+  public static void main(String[] args) {}
 
   public Code(String input){
     this.secretCodeString = input;
@@ -25,10 +23,13 @@ class Code {
     randomize();
   }
 
-  public static void setPegs(){
-    PEGS = new String[]{"c","r","p","o","g"};
-}
 
+
+  public static void setPegs(){
+    PEGS = new String[]{"c","r","p","o","g","y"};
+  }
+
+  // random Code generation
   public Code randomize(){
     setPegs();
 
@@ -46,9 +47,8 @@ class Code {
   }
 
   public static Code parse(String input) {
-    //setPegs();
 
-    String[] letters = input.split("");
+    String[] letters = input.toLowerCase().split("");
     StringBuilder sb = new StringBuilder();
 
     for (String letter : letters) {
@@ -63,7 +63,6 @@ class Code {
 
     String stringToParse = sb.toString();
     Code parsedCode = new Code(stringToParse);
-    //System.out.println(parsedCode);
     return parsedCode;
 
   }
@@ -79,7 +78,7 @@ class Code {
 
     for(int i = 0; i < 4; i++){
 
-      if(guessArray[i] == winningCodeArray[i]){
+      if(guessArray[i].equals(winningCodeArray[i])){
         exactMatches++;
       }
     }
@@ -93,15 +92,7 @@ class Code {
     HashMap<String,Integer> guessCount = new HashMap<String,Integer>();
     HashMap<String,Integer> secretCodeCount = new HashMap<String,Integer>();
 
-    Set<String> codeKeys = guessCount.keySet();
-
-    int matches = 0;
-    int keys = guessCount.keySet().size();
-
-
-    String[] keyArray = new String[keys];
-
-
+     int matches = 0;
 
     for(int i = 0; i < guessString.length(); i++) {
       //removes character from string
@@ -112,6 +103,7 @@ class Code {
       int count = guessString.length() - guessShort.length();
 
       guessCount.put(codeCharacter, count);
+
     }
 
     for(int i = 0; i < secretCodeString.length(); i++) {
@@ -119,7 +111,7 @@ class Code {
       String winningString = this.secretCodeString;
 
       String winningCodeCharacter = String.valueOf(winningString.charAt(i));
-      String winningCodeShort = guessString.replace(winningCodeCharacter,"");
+      String winningCodeShort = winningString.replace(winningCodeCharacter,"");
 
       //counts instances of said character
       int count = winningString.length() - winningCodeShort.length();
@@ -127,6 +119,11 @@ class Code {
       secretCodeCount.put(winningCodeCharacter, count);
     }
 
+    Set<String> codeKeys = guessCount.keySet();
+    int keys = guessCount.keySet().size();
+    String[] keyArray = new String[keys];
+
+  //gets count
     for (int i = 0; i < keys; i++) {
       codeKeys.toArray(keyArray);
       String keyString = keyArray[i];
